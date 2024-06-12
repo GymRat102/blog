@@ -31,6 +31,7 @@ jobs:
           title="${{ inputs.title }}"
           file_name="${{ inputs.file_name }}"
 
+          mkdir -p "./_posts"
           post_file="./_posts/${date}-${file_name}.md"
 
           cat <<EOF > "${post_file}"
