@@ -1,0 +1,20 @@
+name: post-from-ios
+on:
+  workflow_dispatch:
+    inputs:
+      content:
+        description: "content of the post"
+        required: true
+        type: string
+jobs:
+  post-from-ios:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup git config
+        run: |
+          git config user.name "GitHub Action Bot"
+          git config user.email "weijianduan0302@gmail.com"
+      - name: create new post
+        run: |
+          echo ${{ inputs.update_message }}
