@@ -32,9 +32,7 @@ jobs:
 
           echo "${content}" >> ${post_file}
 
-          echo "${post_file}"
-
-          # commitMsg="${date} ${{ inputs.update_message }}"
-          # git add README.md
-          # git commit -m "${commitMsg}"
-          # git push origin HEAD:main
+          commit_message="add post ${title}"
+          git add "${post_file}"
+          git commit -m "${commit_message}"
+          git push origin HEAD:main
