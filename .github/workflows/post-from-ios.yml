@@ -12,6 +12,7 @@ on:
         type: string
 jobs:
   post-from-ios:
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,7 +32,7 @@ jobs:
           ---
           layout: post
           title: ${title}
-          date: ${date}
+          date: $(date +"%Y-%m-%d %H:%M %z")
           ---
           ${content}
           EOF
