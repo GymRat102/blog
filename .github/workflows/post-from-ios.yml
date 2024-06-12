@@ -17,4 +17,4 @@ jobs:
           git config user.email "weijianduan0302@gmail.com"
       - name: create new post
         run: |
-          echo ${{ inputs.update_message }}
+          echo "${{ inputs.update_message }}"
