@@ -6,6 +6,10 @@ on:
         description: "content of the post"
         required: true
         type: string
+      title:
+        description: "title of the post"
+        required: true
+        type: string
 jobs:
   post-from-ios:
     runs-on: ubuntu-latest
@@ -17,4 +21,20 @@ jobs:
           git config user.email "weijianduan0302@gmail.com"
       - name: create new post
         run: |
-          echo "${{ inputs.content }}"
+          date=$(date '+%Y-%m-%d')
+          content=${{ inputs.content }}
+          title=${{ inputs.title }}
+
+          post_file="./_posts/${date}-${title}.md"
+          touch ${post_file}
+          front_matter="---\nlayout:post\ntitle:${title}\ndate:${date}\n---\n\n"
+          echo ${front_matter} >> ${post_file}
+
+          echo ${content} >> ${post_file}
+
+          echo ${post_file}
+
+          # commitMsg="${date} ${{ inputs.update_message }}"
+          # git add README.md
+          # git commit -m "${commitMsg}"
+          # git push origin HEAD:main
