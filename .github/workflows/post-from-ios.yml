@@ -10,6 +10,10 @@ on:
         description: "title of the post"
         required: true
         type: string
+      file_name:
+        description: "name for _posts file"
+        required: true
+        type: string
 jobs:
   post-from-ios:
 
@@ -25,8 +29,9 @@ jobs:
           date=$(date '+%Y-%m-%d')
           content="${{ inputs.content }}"
           title="${{ inputs.title }}"
+          file_name="${{ inputs.file_name }}"
 
-          post_file="./_posts/${date}-${title}.md"
+          post_file="./_posts/${date}-${file_name}.md"
 
           cat <<EOF > "${post_file}"
           ---
