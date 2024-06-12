@@ -26,10 +26,7 @@ jobs:
           title="${{ inputs.title }}"
 
           post_file="./_posts/${date}-${title}.md"
-          touch "${post_file}"
-          front_matter="---\nlayout:post\ntitle:${title}\ndate:${date}\n---\n\n"
-          echo "${front_matter}" >> ${post_file}
-
+          echo "---\nlayout:post\ntitle:${title}\ndate:${date}\n---\n\n" > ${post_file}
           echo "${content}" >> ${post_file}
 
           commit_message="add post ${title}"
