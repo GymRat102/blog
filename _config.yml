@@ -22,8 +22,8 @@ title: Weijian's Blog
 email: weijianduan0302@gmail.com
 description: >-
   Imagine the alternatives | 想象另一种可能
-baseurl: "/blog" # For GitHub Pages, if the repo is not <username>.github.io, then this need to be set as /<repo>
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # 使用自定义域名时，baseurl 设为空字符串
+url: "weijiand.me" # 替换为你的实际自定义域名
 twitter_username: WeijianDuan
 github_username:  GymRat102
 
