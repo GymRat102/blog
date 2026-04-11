@@ -22,7 +22,7 @@ title: Weijian's Blog
 email: weijianduan0302@gmail.com
 description: >-
   Imagine the alternatives | 想象另一种可能
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/blog" # For GitHub Pages, if the repo is not <username>.github.io, then this need to be set as /<repo>
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: WeijianDuan
 github_username:  GymRat102
