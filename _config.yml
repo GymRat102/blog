@@ -22,8 +22,12 @@ title: Weijian's Blog
 email: weijianduan0302@gmail.com
 description: >-
   Imagine the alternatives | 想象另一种可能
-baseurl: "" # 使用自定义域名时，baseurl 设为空字符串
-url: "weijiand.me" # 替换为你的实际自定义域名
+
+# I am using a custom domain, so
+#   - baseurl set as ""
+#   - url set as my domain
+baseurl: ""
+url: "https://weijiand.me"
 twitter_username: WeijianDuan
 github_username:  GymRat102
 
