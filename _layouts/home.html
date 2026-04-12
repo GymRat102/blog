@@ -1,0 +1,110 @@
+---
+layout: default
+---
+
+<div class="home">
+  <div class="two-lane-layout">
+    <!-- Left lane: Posts -->
+    <div class="lane posts-lane">
+      <h2 class="post-list-heading">Posts</h2>
+      <ul class="post-list">
+        {%- for post in site.posts -%}
+        <li>
+          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+          <h3>
+            <a class="post-link" href="{{ post.url | relative_url }}">
+              {{ post.title | escape }}
+            </a>
+          </h3>
+        </li>
+        {%- endfor -%}
+      </ul>
+      <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
+    </div>
+
+    <!-- Middle separator -->
+    <div class="lane-separator"></div>
+
+    <!-- Right lane: Thoughts -->
+    <div class="lane thoughts-lane">
+      <h2 class="post-list-heading">Thoughts</h2>
+      <div class="thoughts-list">
+        {%- for thought in site.thoughts reversed -%}
+        <div class="thought-item">
+          <span class="thought-date">{{ thought.date | date: "%b %-d, %Y" }}</span>
+          <div class="thought-content">
+            {{ thought.content }}
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.two-lane-layout {
+  display: flex;
+  gap: 40px;
+  position: relative;
+}
+
+.posts-lane {
+  flex: 1;
+}
+
+.thoughts-lane {
+  flex: 1.4;
+}
+
+.lane-separator {
+  width: 0;
+  border-left: 1px dashed #ccc;
+  margin: 0 20px;
+}
+
+.thoughts-list {
+  margin-top: 20px;
+}
+
+.thought-item {
+  margin-bottom: 40px;
+}
+
+.thought-item:last-child {
+  margin-bottom: 0;
+}
+
+.thought-date {
+  font-size: 14px;
+  color: #888;
+}
+
+.thought-content {
+  margin-top: 8px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.thought-content p {
+  margin: 0;
+}
+
+.thought-content p + p {
+  margin-top: 12px;
+}
+
+/* Responsive: Stack on smaller screens */
+@media (max-width: 768px) {
+  .two-lane-layout {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .lane-separator {
+    display: none;
+  }
+}
+</style>
