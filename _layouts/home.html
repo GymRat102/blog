@@ -3,6 +3,8 @@ layout: default
 ---
 
 <div class="home archive-page">
+  {%- include home-tag-cloud.html -%}
+
   <div class="archive-list">
     {%- assign current_year = "" -%}
     {%- for post in site.posts -%}
@@ -18,13 +20,16 @@ layout: default
         {%- assign current_year = post_year -%}
       {%- endif -%}
 
-      <a class="archive-item" href="{{ post.url | relative_url }}">
-        <span class="archive-title">{{ post.title | escape }}</span>
-        <span class="archive-rule" aria-hidden="true"></span>
-        <time class="archive-date" datetime="{{ post.date | date_to_xmlschema }}">
-          {{ post.date | date: "%Y-%m-%d" }}
-        </time>
-      </a>
+      <article class="archive-item">
+        <div class="archive-item-main">
+          <a class="archive-title" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+          <span class="archive-rule" aria-hidden="true"></span>
+          <time class="archive-date" datetime="{{ post.date | date_to_xmlschema }}">
+            {{ post.date | date: "%Y-%m-%d" }}
+          </time>
+        </div>
+        {%- include tag-list.html tags=post.tags -%}
+      </article>
 
       {%- if forloop.last -%}
           </div>

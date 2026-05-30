@@ -28,6 +28,7 @@ description: >-
 #   - url set as my domain
 baseurl: ""
 url: "https://weijiand.me"
+timezone: Asia/Shanghai
 twitter_username: WeijianDuan
 github_username:  GymRat102
 

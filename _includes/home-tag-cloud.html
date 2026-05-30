@@ -1,0 +1,16 @@
+{%- if site.tags.size > 0 -%}
+  <section class="home-tag-cloud" aria-label="Tags">
+    <span class="home-tag-cloud-label">关于</span>
+    <div class="home-tag-cloud-items" id="home-tag-cloud-items">
+      {%- for tag in site.tags -%}
+        {%- assign tag_name = tag[0] -%}
+        {%- assign posts = tag[1] -%}
+        <a class="home-tag-pill" href="{{ "/tags/" | relative_url }}?tag={{ tag_name | uri_escape }}" data-count="{{ posts.size }}">
+          <span class="home-tag-name">{{ tag_name | escape }}</span>
+          <span class="home-tag-count">{{ posts.size }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </section>
+  <script src="{{ "/assets/js/home-tag-cloud.js" | relative_url }}" defer></script>
+{%- endif -%}
