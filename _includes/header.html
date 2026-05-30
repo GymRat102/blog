@@ -1,0 +1,17 @@
+<header class="site-header" role="banner">
+  <div class="site-header-inner">
+    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="page-link{% if page.url == "/thoughts/" %} active{% endif %}" href="{{ "/thoughts/" | relative_url }}">Thoughts</a>
+      <a class="page-link{% if page.url == "/about/" %} active{% endif %}" href="{{ "/about/" | relative_url }}">About</a>
+      <a class="page-link rss-link" href="{{ "/feed.xml" | relative_url }}" aria-label="RSS feed" title="RSS">
+        <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 5.5A14.5 14.5 0 0 1 18.5 20" />
+          <path d="M4 11a9 9 0 0 1 9 9" />
+          <circle cx="5" cy="19" r="1.5" />
+        </svg>
+      </a>
+    </nav>
+  </div>
+</header>
