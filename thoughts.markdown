@@ -11,9 +11,11 @@ permalink: /thoughts/
         <div class="thought-content">
           {{ thought.content }}
         </div>
-        <time class="thought-date" datetime="{{ thought.date | date_to_xmlschema }}">
-          {{ thought.date | date: "%Y-%m-%d %H:%M" }}
-        </time>
+        <a class="thought-date thought-date-link" href="{{ thought.url | relative_url }}">
+          <time datetime="{{ thought.date | date_to_xmlschema }}">
+            {{ thought.date | date: "%Y-%m-%d %H:%M" }}
+          </time>
+        </a>
       </article>
     {%- endfor -%}
   </div>

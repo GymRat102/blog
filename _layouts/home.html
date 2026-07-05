@@ -12,14 +12,14 @@ layout: default
 
       <div class="home-thoughts-rail" aria-label="Recent thoughts">
         {%- for thought in recent_thoughts limit: 5 -%}
-          <article class="home-thought-card">
+          <a class="home-thought-card" href="{{ thought.url | relative_url }}">
             <div class="home-thought-content">
               {{ thought.content }}
             </div>
             <time class="home-thought-date" datetime="{{ thought.date | date_to_xmlschema }}">
               {{ thought.date | date: "%Y-%m-%d" }}
             </time>
-          </article>
+          </a>
         {%- endfor -%}
 
         <a class="home-thought-more-link" href="{{ "/thoughts/" | relative_url }}">

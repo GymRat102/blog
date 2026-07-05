@@ -40,6 +40,15 @@ plugins:
 # Collections
 collections:
   thoughts:
+    output: true
+    permalink: /thoughts/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: thoughts
+    values:
+      layout: thought
 
 # Exclude from processing.
 # The following items will not be processed, by default.

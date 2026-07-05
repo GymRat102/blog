@@ -1,0 +1,19 @@
+---
+layout: default
+---
+
+<article class="thought-detail">
+  <div class="thought-detail-nav">
+    <a href="{{ "/thoughts/" | relative_url }}">Thoughts</a>
+  </div>
+
+  <div class="thought-detail-content">
+    {{ content }}
+  </div>
+
+  <a class="thought-detail-date" href="{{ page.url | relative_url }}">
+    <time datetime="{{ page.date | date_to_xmlschema }}">
+      {{ page.date | date: "%Y-%m-%d %H:%M" }}
+    </time>
+  </a>
+</article>
