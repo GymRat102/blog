@@ -16,9 +16,12 @@ layout: default
             <div class="home-thought-content">
               {{ thought.content }}
             </div>
-            <time class="home-thought-date" datetime="{{ thought.date | date_to_xmlschema }}">
-              {{ thought.date | date: "%Y-%m-%d" }}
-            </time>
+            <div class="home-thought-card-meta">
+              <span class="home-thought-read-more">More →</span>
+              <time class="home-thought-date" datetime="{{ thought.date | date_to_xmlschema }}">
+                {{ thought.date | date: "%Y-%m-%d %H:%M" }}
+              </time>
+            </div>
           </a>
         {%- endfor -%}
 
