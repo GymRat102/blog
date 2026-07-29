@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /quick-publish-tags.json
+---
+{{ site.data.quick_publish_tags | jsonify }}

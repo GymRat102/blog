@@ -18,25 +18,30 @@ module QuickPublish
     raise ArgumentError, "content must not be empty" if content.empty?
 
     type == "thought" \
-      ? publish_thought(root:, content:, time:, slug:) \
+      ? publish_thought(root:, content:, tags:, time:, slug:) \
       : publish_post(root:, content:, title:, tags:, slug:, time:)
   end
 
-  def publish_thought(root:, content:, time:, slug:)
+  def publish_thought(root:, content:, tags:, time:, slug:)
     suffix = slugify(slug)
     basename = time.strftime("%Y-%m-%d-%H%M%S")
     basename = "#{basename}-#{suffix}" unless suffix.empty?
 
-    front_matter = [
+    lines = [
       "---",
       "date: #{time.strftime("%Y-%m-%d %H:%M:%S %z")}",
-      "---",
-      "",
-      content,
-      "",
-    ].join("\n")
+    ]
 
-    write_unique(root:, directory: "_thoughts", basename:, front_matter:, time:)
+    append_tags(lines, tags)
+    lines.concat(["---", "", content, ""])
+
+    write_unique(
+      root:,
+      directory: "_thoughts",
+      basename:,
+      front_matter: lines.join("\n"),
+      time:,
+    )
   end
 
   def publish_post(root:, content:, title:, tags:, slug:, time:)
@@ -55,11 +60,7 @@ module QuickPublish
       "date: #{time.strftime("%Y-%m-%d %H:%M:%S %z")}",
     ]
 
-    parsed_tags = parse_tags(tags)
-    unless parsed_tags.empty?
-      lines << "tags:"
-      parsed_tags.each { |tag| lines << "  - #{JSON.generate(tag)}" }
-    end
+    append_tags(lines, tags)
 
     lines.concat(["---", "", content, ""])
     write_unique(root:, directory: "_posts", basename:, front_matter: lines.join("\n"), time:)
@@ -76,6 +77,14 @@ module QuickPublish
 
   def parse_tags(tags)
     tags.to_s.split(/[,，\n]/).map(&:strip).reject(&:empty?).uniq
+  end
+
+  def append_tags(lines, tags)
+    parsed_tags = parse_tags(tags)
+    return if parsed_tags.empty?
+
+    lines << "tags:"
+    parsed_tags.each { |tag| lines << "  - #{JSON.generate(tag)}" }
   end
 
   def slugify(value)

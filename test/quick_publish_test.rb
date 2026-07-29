@@ -30,12 +30,14 @@ Dir.mktmpdir do |root|
     root:,
     type: "thought",
     content: "A quick thought.\r\n\nhttps://example.com",
+    tags: "TIL, 工具，TIL",
     now:,
   )
 
   Assertions.equal("_thoughts/2026-07-26-153208.md", thought_path)
   thought = File.read(File.join(root, thought_path))
   Assertions.includes(thought, "date: 2026-07-26 15:32:08 +0800")
+  Assertions.includes(thought, "tags:\n  - \"TIL\"\n  - \"工具\"")
   Assertions.includes(thought, "A quick thought.\n\nhttps://example.com")
 
   post_path = QuickPublish.publish(

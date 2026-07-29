@@ -20,7 +20,7 @@ on:
         required: false
         type: string
       tags:
-        description: Comma-separated post tags
+        description: Comma- or newline-separated tags
         required: false
         type: string
       slug:
