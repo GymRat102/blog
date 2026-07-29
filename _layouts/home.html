@@ -12,17 +12,29 @@ layout: default
 
       <div class="home-thoughts-rail" aria-label="Recent thoughts">
         {%- for thought in recent_thoughts limit: 5 -%}
-          <a class="home-thought-card" href="{{ thought.url | relative_url }}">
+          <article class="home-thought-card">
+            <div class="home-thought-card-header">
+              {%- if thought.tags and thought.tags.size > 0 -%}
+                <div class="home-thought-card-tags">
+                  {%- include tag-list.html tags=thought.tags static=true -%}
+                </div>
+              {%- endif -%}
+              <a class="home-thought-date" href="{{ thought.url | relative_url }}">
+                <time datetime="{{ thought.date | date_to_xmlschema }}">
+                  {{ thought.date | date: "%Y-%m-%d %H:%M" }}
+                </time>
+              </a>
+            </div>
             <div class="home-thought-content">
               {{ thought.content }}
             </div>
             <div class="home-thought-card-meta">
-              <span class="home-thought-read-more">More →</span>
-              <time class="home-thought-date" datetime="{{ thought.date | date_to_xmlschema }}">
-                {{ thought.date | date: "%Y-%m-%d %H:%M" }}
-              </time>
+              <button class="home-thought-read-more" type="button" aria-expanded="false" hidden>
+                <span class="home-thought-read-more-label">More</span>
+                <span class="home-thought-read-more-arrow" aria-hidden="true">↓</span>
+              </button>
             </div>
-          </a>
+          </article>
         {%- endfor -%}
 
         <a class="home-thought-more-link" href="{{ "/thoughts/" | relative_url }}">
@@ -66,3 +78,5 @@ layout: default
     {%- endfor -%}
   </div>
 </div>
+
+<script src="{{ "/assets/js/home-thought-cards.js" | relative_url }}" defer></script>

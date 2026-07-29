@@ -234,6 +234,7 @@ a:hover {
   position: relative;
   z-index: 1;
   display: flex;
+  align-items: flex-start;
   margin: 0 -1rem;
   padding: 1rem 1rem 1.1rem 1.45rem;
   gap: 0.75rem;
@@ -252,14 +253,14 @@ a:hover {
 
 .home-thought-card {
   position: relative;
-  display: flex;
+  display: grid;
   min-width: 18rem;
-  min-height: 14.75rem;
+  height: 15.5rem;
+  min-height: 15.5rem;
   flex: 0 0 18rem;
-  flex-direction: column;
-  justify-content: space-between;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   margin: 0;
-  padding: 0.95rem;
+  padding: 1rem 1rem 1.15rem;
   border: 1px solid #dfe5ee;
   border-radius: 6px;
   background:
@@ -271,11 +272,12 @@ a:hover {
   color: var(--site-text);
   scroll-snap-align: start;
   text-decoration: none;
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
-.home-thought-card:visited {
-  color: var(--site-text);
+.home-thought-card.is-expanded {
+  height: auto;
+  grid-template-rows: auto auto auto;
 }
 
 .home-thought-card:nth-child(2n) {
@@ -284,36 +286,42 @@ a:hover {
     var(--site-bg);
 }
 
-.home-thought-card:nth-child(3n) {
-  transform: rotate(-0.55deg);
-}
-
-.home-thought-card:nth-child(4n) {
-  transform: rotate(0.42deg);
-}
-
 .home-thought-card:hover,
 .home-thought-card:focus-within {
   border-color: #c8d2df;
-  box-shadow: 0 0.9rem 2rem rgba(31, 41, 51, 0.1);
-  transform: translateY(-0.35rem);
+  background:
+    linear-gradient(135deg, rgba(249, 251, 253, 0.98), rgba(255, 255, 255, 1)),
+    var(--site-bg);
+  box-shadow:
+    0 0.35rem 0.8rem rgba(31, 41, 51, 0.07),
+    0 1.2rem 2.4rem -1.35rem rgba(31, 41, 51, 0.24);
 }
 
-.home-thought-card:nth-child(3n):hover,
-.home-thought-card:nth-child(3n):focus-within,
-.home-thought-card:nth-child(4n):hover,
-.home-thought-card:nth-child(4n):focus-within {
-  transform: translateY(-0.35rem);
+.home-thought-card-header {
+  display: grid;
+  min-height: 1.35rem;
+  margin: -0.18rem -0.12rem 0.7rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .home-thought-content {
-  display: -webkit-box;
+  min-height: 0;
   overflow: hidden;
   color: var(--site-text);
   font-size: 0.95rem;
   line-height: 1.65;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 7;
+  transition: max-height 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-thought-card.is-truncated:not(.is-expanded) .home-thought-content {
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+.home-thought-card-tags {
+  min-width: 0;
 }
 
 .home-thought-content p {
@@ -331,18 +339,47 @@ a:hover {
 
 .home-thought-card-meta {
   display: flex;
+  height: 1.4rem;
   margin-top: 0.85rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  align-items: end;
+}
+
+.home-thought-read-more[hidden] {
+  display: none;
 }
 
 .home-thought-read-more {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  align-items: center;
+  gap: 0.28rem;
+  background: transparent;
   flex: 0 0 auto;
   color: #596575;
+  cursor: pointer;
+  font-family: inherit;
   font-size: 0.78rem;
   font-weight: 650;
-  line-height: 1.35;
+  line-height: 1.2rem;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.home-thought-read-more:hover,
+.home-thought-read-more:focus-visible {
+  border-bottom-color: #bfc8d5;
+  color: var(--site-link);
+  outline: none;
+}
+
+.home-thought-read-more-arrow {
+  display: inline-block;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-thought-card.is-expanded:not(.is-collapsing) .home-thought-read-more-arrow {
+  transform: rotate(180deg);
 }
 
 .home-thought-date {
@@ -351,15 +388,24 @@ a:hover {
   color: var(--site-muted);
   font-family: Menlo, "Roboto Mono", "Courier New", monospace;
   font-size: 0.76rem;
-  line-height: 1.4;
+  line-height: 1.2rem;
   text-align: right;
+  white-space: nowrap;
+}
+
+.home-thought-date:visited {
+  color: var(--site-muted);
+}
+
+.home-thought-date:hover {
+  color: var(--site-link);
 }
 
 .home-thought-more-link {
   display: flex;
   width: 4.8rem;
   min-width: 4.8rem;
-  min-height: 14.75rem;
+  min-height: 15.5rem;
   margin-left: 0.45rem;
   padding: 0.8rem 0.58rem;
   flex: 0 0 4.8rem;
@@ -505,14 +551,18 @@ a:hover {
   text-transform: uppercase;
 }
 
-.tag-pill:visited {
+a.tag-pill:visited {
   color: #596575;
 }
 
-.tag-pill:hover {
+a.tag-pill:hover {
   border-color: #bfc8d5;
   background: #f6f8fa;
   color: var(--site-link);
+}
+
+.tag-pill-static {
+  cursor: default;
 }
 
 .page-kicker {
@@ -591,9 +641,19 @@ a:hover {
   color: var(--site-link);
 }
 
-.thought-item .thought-date {
-  display: block;
+.thought-meta,
+.thought-detail-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin-top: 0.8rem;
+}
+
+.thought-meta .thought-date,
+.thought-detail-meta .thought-detail-date {
+  margin-top: 0;
+  margin-left: auto;
   text-align: right;
 }
 
@@ -650,7 +710,6 @@ a:hover {
 
 .thought-detail-date {
   display: block;
-  margin-top: 1rem;
   color: var(--site-muted);
   font-family: Menlo, "Roboto Mono", "Courier New", monospace;
   font-size: 0.875rem;
@@ -837,21 +896,18 @@ a:hover {
   }
 
   .home-thought-card {
-    min-width: 14.5rem;
-    min-height: 13.5rem;
-    flex-basis: 14.5rem;
-    padding: 0.78rem;
-  }
-
-  .home-thought-card:hover,
-  .home-thought-card:focus-within {
-    transform: translateY(-0.35rem);
+    width: min(84vw, 20rem);
+    min-width: min(84vw, 20rem);
+    height: 14.25rem;
+    min-height: 14.25rem;
+    flex-basis: min(84vw, 20rem);
+    padding: 0.88rem 0.82rem 1rem;
   }
 
   .home-thought-more-link {
     width: 4.2rem;
     min-width: 4.2rem;
-    min-height: 13.5rem;
+    min-height: 14.25rem;
     margin-left: 0.35rem;
     padding: 0.7rem 0.5rem;
     flex-basis: 4.2rem;
@@ -864,7 +920,6 @@ a:hover {
   .home-thought-content {
     font-size: 0.92rem;
     line-height: 1.6;
-    -webkit-line-clamp: 6;
   }
 
   .home-thought-card-meta {
@@ -908,5 +963,13 @@ a:hover {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-thought-card,
+  .home-thought-content,
+  .home-thought-read-more-arrow {
+    transition: none;
   }
 }

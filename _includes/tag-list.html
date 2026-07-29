@@ -1,7 +1,11 @@
 {%- if include.tags and include.tags.size > 0 -%}
   <span class="tag-list" aria-label="Tags">
     {%- for tag in include.tags -%}
-      <a class="tag-pill" href="{{ "/tags/" | relative_url }}?tag={{ tag | uri_escape }}">{{ tag | escape }}</a>
+      {%- if include.static -%}
+        <span class="tag-pill tag-pill-static">{{ tag | escape }}</span>
+      {%- else -%}
+        <a class="tag-pill" href="{{ "/tags/" | relative_url }}?tag={{ tag | uri_escape }}">{{ tag | escape }}</a>
+      {%- endif -%}
     {%- endfor -%}
   </span>
 {%- endif -%}
