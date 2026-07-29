@@ -31,6 +31,10 @@ Dir.mktmpdir do |root|
     type: "thought",
     content: "A quick thought.\r\n\nhttps://example.com",
     tags: "TIL, 工具，TIL",
+    images: <<~IMAGES,
+      https://weijiand.me/uploads/one.png
+      https://weijiand.me/uploads/two.png
+    IMAGES
     now:,
   )
 
@@ -38,6 +42,12 @@ Dir.mktmpdir do |root|
   thought = File.read(File.join(root, thought_path))
   Assertions.includes(thought, "date: 2026-07-26 15:32:08 +0800")
   Assertions.includes(thought, "tags:\n  - \"TIL\"\n  - \"工具\"")
+  Assertions.includes(
+    thought,
+    "images:\n" \
+      "  - \"https://weijiand.me/uploads/one.png\"\n" \
+      "  - \"https://weijiand.me/uploads/two.png\"",
+  )
   Assertions.includes(thought, "A quick thought.\n\nhttps://example.com")
 
   post_path = QuickPublish.publish(
@@ -70,6 +80,26 @@ end
 
 Assertions.raises(ArgumentError) do
   QuickPublish.publish(root: Dir.pwd, type: "post", title: "", content: "正文", now:)
+end
+
+Assertions.raises(ArgumentError) do
+  QuickPublish.publish(
+    root: Dir.pwd,
+    type: "thought",
+    content: "正文",
+    images: "not-a-url",
+    now:,
+  )
+end
+
+Assertions.raises(ArgumentError) do
+  QuickPublish.publish(
+    root: Dir.pwd,
+    type: "thought",
+    content: "正文",
+    images: "https://example.com/image.png ||| 不再支持 alt",
+    now:,
+  )
 end
 
 puts "quick_publish_test: OK"

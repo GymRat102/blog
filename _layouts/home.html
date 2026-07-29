@@ -12,7 +12,13 @@ layout: default
 
       <div class="home-thoughts-rail" aria-label="Recent thoughts">
         {%- for thought in recent_thoughts limit: 5 -%}
-          <article class="home-thought-card">
+          {%- assign thought_image_count = 0 -%}
+          {%- if thought.images -%}
+            {%- assign thought_image_count = thought.images.size -%}
+          {%- elsif thought.image -%}
+            {%- assign thought_image_count = 1 -%}
+          {%- endif -%}
+          <article class="home-thought-card{% if thought_image_count > 0 %} has-image{% endif %}">
             <div class="home-thought-card-header">
               {%- if thought.tags and thought.tags.size > 0 -%}
                 <div class="home-thought-card-tags">
@@ -33,6 +39,60 @@ layout: default
                 <span class="home-thought-read-more-label">More</span>
                 <span class="home-thought-read-more-arrow" aria-hidden="true">↓</span>
               </button>
+              {%- if thought_image_count > 0 -%}
+                <div class="home-thought-gallery{% if thought_image_count == 1 %} is-single{% elsif thought_image_count == 2 %} is-pair{% else %} is-stacked{% endif %}">
+                  {%- if thought.images -%}
+                    {%- for gallery_image in thought.images -%}
+                      {%- assign gallery_image_src = gallery_image.src | default: gallery_image -%}
+                      {%- assign gallery_image_alt = gallery_image.alt | default: "" -%}
+                      {%- if gallery_image_src contains "://" -%}
+                        {%- assign gallery_image_url = gallery_image_src -%}
+                      {%- else -%}
+                        {%- assign gallery_image_url = gallery_image_src | relative_url -%}
+                      {%- endif -%}
+                      <button
+                        class="home-thought-thumbnail-button"
+                        type="button"
+                        aria-label="查看图片 {{ forloop.index }} / {{ thought_image_count }}"
+                        data-gallery-src="{{ gallery_image_url }}"
+                        data-gallery-alt="{{ gallery_image_alt | escape }}"
+                      >
+                        <img
+                          src="{{ gallery_image_url }}"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        >
+                      </button>
+                    {%- endfor -%}
+                  {%- else -%}
+                    {%- if thought.image contains "://" -%}
+                      {%- assign thought_image_url = thought.image -%}
+                    {%- else -%}
+                      {%- assign thought_image_url = thought.image | relative_url -%}
+                    {%- endif -%}
+                    <button
+                      class="home-thought-thumbnail-button"
+                      type="button"
+                      aria-label="查看图片 1 / 1"
+                      data-gallery-src="{{ thought_image_url }}"
+                      data-gallery-alt="{{ thought.image_alt | default: "" | escape }}"
+                    >
+                      <img
+                        src="{{ thought_image_url }}"
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      >
+                    </button>
+                  {%- endif -%}
+                  {%- if thought_image_count > 1 -%}
+                    <span class="home-thought-gallery-count" aria-hidden="true">
+                      {{- thought_image_count -}}
+                    </span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
             </div>
           </article>
         {%- endfor -%}
@@ -42,6 +102,22 @@ layout: default
           <span class="home-thought-link-meta" aria-hidden="true">→</span>
         </a>
       </div>
+
+      <dialog id="thought-lightbox" class="thought-lightbox" aria-label="图片预览">
+        <div class="thought-lightbox-shell">
+          <button class="thought-lightbox-close" type="button" aria-label="关闭图片预览">
+            <span aria-hidden="true">×</span>
+          </button>
+          <button class="thought-lightbox-nav thought-lightbox-prev" type="button" aria-label="上一张图片">
+            <span aria-hidden="true">←</span>
+          </button>
+          <div class="thought-lightbox-track"></div>
+          <button class="thought-lightbox-nav thought-lightbox-next" type="button" aria-label="下一张图片">
+            <span aria-hidden="true">→</span>
+          </button>
+          <div class="thought-lightbox-counter" aria-live="polite"></div>
+        </div>
+      </dialog>
     </section>
   {%- endif -%}
 
@@ -80,3 +156,4 @@ layout: default
 </div>
 
 <script src="{{ "/assets/js/home-thought-cards.js" | relative_url }}" defer></script>
+<script src="{{ "/assets/js/thought-gallery.js" | relative_url }}" defer></script>

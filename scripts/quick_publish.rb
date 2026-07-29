@@ -9,7 +9,7 @@ module QuickPublish
 
   module_function
 
-  def publish(root:, type:, content:, title: nil, tags: nil, slug: nil, now: Time.now)
+  def publish(root:, type:, content:, title: nil, tags: nil, images: nil, slug: nil, now: Time.now)
     type = type.to_s.strip.downcase
     content = normalize_content(content)
     time = normalize_time(now)
@@ -18,11 +18,11 @@ module QuickPublish
     raise ArgumentError, "content must not be empty" if content.empty?
 
     type == "thought" \
-      ? publish_thought(root:, content:, tags:, time:, slug:) \
+      ? publish_thought(root:, content:, tags:, images:, time:, slug:) \
       : publish_post(root:, content:, title:, tags:, slug:, time:)
   end
 
-  def publish_thought(root:, content:, tags:, time:, slug:)
+  def publish_thought(root:, content:, tags:, images:, time:, slug:)
     suffix = slugify(slug)
     basename = time.strftime("%Y-%m-%d-%H%M%S")
     basename = "#{basename}-#{suffix}" unless suffix.empty?
@@ -33,6 +33,7 @@ module QuickPublish
     ]
 
     append_tags(lines, tags)
+    append_images(lines, images)
     lines.concat(["---", "", content, ""])
 
     write_unique(
@@ -87,6 +88,31 @@ module QuickPublish
     parsed_tags.each { |tag| lines << "  - #{JSON.generate(tag)}" }
   end
 
+  def parse_images(images)
+    return [] if images.nil?
+
+    entries = images.is_a?(Array) ? images : images.to_s.lines
+    entries.map(&:to_s).map(&:strip).reject(&:empty?).map.with_index do |source, index|
+      if source.include?("|||")
+        raise ArgumentError, "image #{index + 1} must contain only a URL"
+      end
+
+      unless source.match?(%r{\Ahttps?://}i)
+        raise ArgumentError, "image #{index + 1} URL must start with http:// or https://"
+      end
+
+      source
+    end
+  end
+
+  def append_images(lines, images)
+    parsed_images = parse_images(images)
+    return if parsed_images.empty?
+
+    lines << "images:"
+    parsed_images.each { |image| lines << "  - #{JSON.generate(image)}" }
+  end
+
   def slugify(value)
     value.to_s
       .downcase
@@ -129,6 +155,7 @@ if $PROGRAM_NAME == __FILE__
     content: ENV.fetch("QUICK_PUBLISH_CONTENT"),
     title: ENV["QUICK_PUBLISH_TITLE"],
     tags: ENV["QUICK_PUBLISH_TAGS"],
+    images: ENV["QUICK_PUBLISH_IMAGES"],
     slug: ENV["QUICK_PUBLISH_SLUG"],
     now: ENV.fetch("QUICK_PUBLISH_NOW", Time.now.iso8601),
   )
