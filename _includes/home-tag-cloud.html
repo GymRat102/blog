@@ -1,13 +1,19 @@
-{%- if site.tags.size > 0 -%}
+{%- assign tagged_items = site.posts | concat: site.thoughts -%}
+{%- assign tag_names = tagged_items | map: "tags" | compact | join: "," | split: "," | uniq -%}
+{%- if tag_names.size > 0 -%}
   <section class="home-tag-cloud" aria-label="Tags">
     <span class="home-tag-cloud-label">关于</span>
     <div class="home-tag-cloud-items" id="home-tag-cloud-items">
-      {%- for tag in site.tags -%}
-        {%- assign tag_name = tag[0] -%}
-        {%- assign posts = tag[1] -%}
-        <a class="home-tag-pill" href="{{ "/tags/" | relative_url }}?tag={{ tag_name | uri_escape }}" data-count="{{ posts.size }}">
+      {%- for tag_name in tag_names -%}
+        {%- assign item_count = 0 -%}
+        {%- for item in tagged_items -%}
+          {%- if item.tags contains tag_name -%}
+            {%- assign item_count = item_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+        <a class="home-tag-pill" href="{{ "/tags/" | relative_url }}?tag={{ tag_name | uri_escape }}" data-count="{{ item_count }}">
           <span class="home-tag-name">{{ tag_name | escape }}</span>
-          <span class="home-tag-count">{{ posts.size }}</span>
+          <span class="home-tag-count">{{ item_count }}</span>
         </a>
       {%- endfor -%}
     </div>

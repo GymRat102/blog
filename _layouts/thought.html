@@ -12,7 +12,7 @@ layout: default
   </div>
 
   <div class="thought-detail-meta">
-    {%- include tag-list.html tags=page.tags static=true -%}
+    {%- include tag-list.html tags=page.tags -%}
     <a class="thought-detail-date" href="{{ page.url | relative_url }}">
       <time datetime="{{ page.date | date_to_xmlschema }}">
         {{ page.date | date: "%Y-%m-%d %H:%M" }}

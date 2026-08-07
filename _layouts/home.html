@@ -22,7 +22,7 @@ layout: default
             <div class="home-thought-card-header">
               {%- if thought.tags and thought.tags.size > 0 -%}
                 <div class="home-thought-card-tags">
-                  {%- include tag-list.html tags=thought.tags static=true -%}
+                  {%- include tag-list.html tags=thought.tags -%}
                 </div>
               {%- endif -%}
               <a class="home-thought-date" href="{{ thought.url | relative_url }}">

@@ -12,7 +12,7 @@ permalink: /thoughts/
           {{ thought.content }}
         </div>
         <div class="thought-meta">
-          {%- include tag-list.html tags=thought.tags static=true -%}
+          {%- include tag-list.html tags=thought.tags -%}
           <a class="thought-date thought-date-link" href="{{ thought.url | relative_url }}">
             <time datetime="{{ thought.date | date_to_xmlschema }}">
               {{ thought.date | date: "%Y-%m-%d %H:%M" }}

@@ -761,6 +761,37 @@ body.has-thought-lightbox {
   color: var(--site-link);
 }
 
+.tagged-item-label {
+  display: inline-flex;
+  align-items: baseline;
+  min-width: 0;
+  gap: 0.48rem;
+}
+
+.tagged-item-label .archive-title {
+  display: block;
+}
+
+.content-type-badge {
+  flex: 0 0 auto;
+  padding: 0.08rem 0.34rem;
+  border: 1px solid #d6dde7;
+  border-radius: 4px;
+  background: #fbfcfd;
+  color: #687588;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.content-type-thought {
+  border-color: #d9d5e8;
+  background: #faf9fd;
+  color: #716a8c;
+}
+
 .archive-rule {
   flex: 1 1 auto;
   min-width: 1.5rem;

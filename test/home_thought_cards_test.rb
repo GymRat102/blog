@@ -3,6 +3,8 @@ require "minitest/autorun"
 class HomeThoughtCardsTest < Minitest::Test
   CSS = File.read(File.expand_path("../assets/main.scss", __dir__))
   HOME_LAYOUT = File.read(File.expand_path("../_layouts/home.html", __dir__))
+  TAGS_PAGE = File.read(File.expand_path("../tags.markdown", __dir__))
+  TAG_LIST = File.read(File.expand_path("../_includes/tag-list.html", __dir__))
   GALLERY_JS = File.read(File.expand_path("../assets/js/thought-gallery.js", __dir__))
 
   def test_recent_thought_cards_are_compact_but_readable
@@ -32,6 +34,18 @@ class HomeThoughtCardsTest < Minitest::Test
 
   def test_recent_thought_card_shows_date_and_time
     assert_includes HOME_LAYOUT, 'date: "%Y-%m-%d %H:%M"'
+  end
+
+  def test_thought_tags_link_to_the_combined_tag_page
+    refute_includes HOME_LAYOUT, "tags=thought.tags static=true"
+    assert_includes TAG_LIST, 'href="{{ "/tags/" | relative_url }}?tag={{ tag | uri_escape }}"'
+    assert_includes TAGS_PAGE, 'site.posts | concat: site.thoughts'
+    assert_includes TAGS_PAGE, 'item.tags contains tag_name'
+    assert_includes TAGS_PAGE, 'item.url contains "/thoughts/"'
+    assert_includes TAGS_PAGE, "content-type-thought"
+    assert_includes TAGS_PAGE, "content-type-blog"
+    assert_includes TAGS_PAGE, "Thought"
+    assert_includes TAGS_PAGE, "Blog"
   end
 
   def test_thought_images_render_as_a_bottom_right_gallery
