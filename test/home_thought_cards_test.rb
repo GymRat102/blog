@@ -32,6 +32,18 @@ class HomeThoughtCardsTest < Minitest::Test
     assert_includes HOME_LAYOUT, "More"
   end
 
+  def test_recent_thoughts_have_a_visible_archive_heading
+    assert_includes HOME_LAYOUT, 'class="archive-section-heading home-thoughts-heading">Thoughts</h2>'
+    refute_includes HOME_LAYOUT, 'id="home-thoughts-heading" class="screen-reader-text"'
+  end
+
+  def test_blog_archive_has_a_counterpart_heading
+    assert_includes HOME_LAYOUT, '<h2 id="home-blog-heading" class="archive-section-heading">Blog</h2>'
+    refute_includes HOME_LAYOUT, "assign current_year"
+    refute_includes HOME_LAYOUT, "archive-year"
+    refute_includes HOME_LAYOUT, 'id="year-'
+  end
+
   def test_recent_thought_card_shows_date_and_time
     assert_includes HOME_LAYOUT, 'date: "%Y-%m-%d %H:%M"'
   end
