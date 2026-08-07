@@ -48,6 +48,14 @@ class HomeThoughtCardsTest < Minitest::Test
     assert_includes TAGS_PAGE, "Blog"
   end
 
+  def test_tagged_items_keep_the_date_aligned_on_mobile
+    mobile_tagged_item_rules = css_block(".tags-page .archive-item-main", within_media: "max-width: 640px")
+
+    assert_includes mobile_tagged_item_rules, "display: grid;"
+    assert_includes mobile_tagged_item_rules, "grid-template-columns: minmax(0, 1fr) auto;"
+    assert_includes mobile_tagged_item_rules, "align-items: start;"
+  end
+
   def test_thought_images_render_as_a_bottom_right_gallery
     image_meta_rules = css_block(".home-thought-card.has-image .home-thought-card-meta")
     gallery_rules = css_block(".home-thought-gallery")

@@ -1273,6 +1273,23 @@ a.tag-pill:hover {
     display: none;
   }
 
+  .tags-page .archive-item-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 0.65rem;
+    row-gap: 0;
+  }
+
+  .tags-page .tagged-item-label {
+    align-items: flex-start;
+  }
+
+  .tags-page .archive-date {
+    padding-top: 0.05rem;
+    font-size: 0.75rem;
+  }
+
   .thought-item {
     padding: 1rem 0;
   }
