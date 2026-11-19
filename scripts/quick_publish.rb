@@ -14,12 +14,13 @@ module QuickPublish
     content = normalize_content(content)
     time = normalize_time(now)
 
-    raise ArgumentError, "type must be thought or post" unless %w[thought post].include?(type)
+    raise ArgumentError, "type must be bit, post, or thought" unless %w[bit post thought].include?(type)
     raise ArgumentError, "content must not be empty" if content.empty?
 
-    type == "thought" \
-      ? publish_thought(root:, content:, tags:, images:, time:, slug:) \
-      : publish_post(root:, content:, title:, tags:, slug:, time:)
+    return publish_thought(root:, content:, tags:, images:, time:, slug:) if type == "thought"
+
+    directory = type == "bit" ? "_bits" : "_posts"
+    publish_post(root:, directory:, content:, title:, tags:, slug:, time:)
   end
 
   def publish_thought(root:, content:, tags:, images:, time:, slug:)
@@ -45,7 +46,7 @@ module QuickPublish
     )
   end
 
-  def publish_post(root:, content:, title:, tags:, slug:, time:)
+  def publish_post(root:, directory:, content:, title:, tags:, slug:, time:)
     title = title.to_s.strip
     raise ArgumentError, "title must not be empty for a post" if title.empty?
 
@@ -64,7 +65,7 @@ module QuickPublish
     append_tags(lines, tags)
 
     lines.concat(["---", "", content, ""])
-    write_unique(root:, directory: "_posts", basename:, front_matter: lines.join("\n"), time:)
+    write_unique(root:, directory:, basename:, front_matter: lines.join("\n"), time:)
   end
 
   def normalize_content(content)

@@ -1,0 +1,13 @@
+---
+layout: default
+---
+
+<div class="archive-page">
+  <h1 class="archive-section-heading">{{ page.title | escape }}</h1>
+  {%- assign items = site[page.collection_name] | sort: "date" | reverse -%}
+  {%- if items.size > 0 -%}
+    {%- include archive-items.html items=items -%}
+  {%- else -%}
+    <p class="archive-empty">{{ page.empty_message | escape }}</p>
+  {%- endif -%}
+</div>

@@ -39,16 +39,16 @@ plugins:
 
 # Collections
 collections:
-  thoughts:
+  bits:
     output: true
-    permalink: /thoughts/:name/
+    permalink: /bits/:name/
 
 defaults:
   - scope:
       path: ""
-      type: thoughts
+      type: bits
     values:
-      layout: thought
+      layout: post
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -58,7 +58,8 @@ defaults:
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
-# exclude:
+exclude:
+  - _thoughts
 #   - .sass-cache/
 #   - .jekyll-cache/
 #   - gemfiles/

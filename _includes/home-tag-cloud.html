@@ -1,4 +1,4 @@
-{%- assign tagged_items = site.posts | concat: site.thoughts -%}
+{%- assign tagged_items = site.posts | concat: site.bits -%}
 {%- assign tag_names = tagged_items | map: "tags" | compact | join: "," | split: "," | uniq -%}
 {%- if tag_names.size > 0 -%}
   <section class="home-tag-cloud" aria-label="Tags">

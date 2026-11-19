@@ -64,6 +64,21 @@ Dir.mktmpdir do |root|
   Assertions.includes(post, 'title: "Designing Small Tools"')
   Assertions.includes(post, "  - \"Jekyll\"")
   Assertions.includes(post, "  - \"工具\"")
+
+  bit_path = QuickPublish.publish(
+    root:,
+    type: "bit",
+    title: "A Small Note",
+    tags: "TIL",
+    content: "正文",
+    now:,
+  )
+
+  Assertions.equal("_bits/2026-07-26-a-small-note.md", bit_path)
+  bit = File.read(File.join(root, bit_path))
+  Assertions.includes(bit, "layout: post")
+  Assertions.includes(bit, 'title: "A Small Note"')
+  Assertions.includes(bit, "  - \"TIL\"")
 end
 
 Dir.mktmpdir do |root|

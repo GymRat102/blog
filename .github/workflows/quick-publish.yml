@@ -6,17 +6,18 @@ on:
       type:
         description: Content type
         required: true
-        default: thought
+        default: bit
         type: choice
         options:
-          - thought
+          - bit
           - post
+          - thought
       content:
         description: Markdown content
         required: true
         type: string
       title:
-        description: Post title
+        description: Title for Bit or Blog post
         required: false
         type: string
       tags:
@@ -24,7 +25,7 @@ on:
         required: false
         type: string
       images:
-        description: "Thought image URLs, one per line"
+        description: "Archived Thought image URLs, one per line"
         required: false
         type: string
       slug:
