@@ -7,9 +7,9 @@ tags:
     - 命令行
 ---
 
-有时候经常需要复制命令行里刚刚执行过的命令，比如在验证成功之后发送给别人，或者设置成一个 alias 后续使用。如果使用 oh-my-zsh 的话，可以使用它自带的 copybuffer 插件：
+有时候经常需要复制命令行里刚刚执行过的命令，比如在验证成功之后发送给别人，或者设置成一个 alias 后续使用。当命令很长的时候，复制起来就有些麻烦。如果使用 oh-my-zsh 的话，可以使用它自带的 copybuffer 插件来解决这个问题：
 
-```
+```sh
 # 在你的 oh-my-zsh 配置文件里加上
 
 plugins=(
@@ -18,10 +18,10 @@ plugins=(
 )
 ```
 
-然后就可以使用 ctrl-o 快捷键来复制当前命令行上的内容。这样，复制上一次执行过的 shell 命令，只需要按「上 + ctrl-o」两次按键即可，又减少了鼠标操作（尤其是拖拽光标复制有时候是挺麻烦的）。
+然后就可以使用 ctrl-o 快捷键来复制当前命令行上的内容。这样，复制上一次执行过的 shell 命令，只需要按「上 + ctrl-o」两次按键即可完成。
 
-[copybuffer 插件的源码](https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copybuffer/copybuffer.plugin.zsh)，也非常的简单，就是通过定义一个 shell 函数，然后快捷键绑定上去实现的：
-```
+[copybuffer 插件的源码](https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/copybuffer/copybuffer.plugin.zsh) 其实并不复杂，是通过定义一个 shell 函数，然后快捷键绑定上去实现的：
+```sh
 # copy the active line from the command line buffer
 # onto the system clipboard
 
